@@ -1,6 +1,6 @@
 let g:imapftl_vitex#leaders = ['\'] ", ';']
 
-let g:imapftl_vitex#non_macro_char_l = ['$', '{', '}', '[', ']', '\s']
+let g:imapftl_vitex#non_macro_char_l = ['\s', '{', '}', '[', ']', '\$']
 
 " Imap Dictionaries: {{{
 " Form: { [ key = macro name, value = expansion text ], ... }

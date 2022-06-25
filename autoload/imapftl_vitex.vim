@@ -2,6 +2,12 @@ let g:imapftl_vitex#leaders = ['\'] ", ';']
 
 let g:imapftl_vitex#non_macro_char_l = ['\s', '{', '}', '[', ']', '\$']
 
+"Enter - generic
+let g:imapftl_vitex#generic_mapping_92_13 =
+    \ '\begin{<token>}\n<++>\n\end{<token>}'
+"Tab - generic
+let g:imapftl_vitex#generic_mapping_92_9 = '\<token>{<++>}<++>'
+
 " Imap Dictionaries: {{{
 " Form: { [ key = macro name, value = expansion text ], ... }
 " Description: {{{ Each dictionary has a name of the form 

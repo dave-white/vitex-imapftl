@@ -34,8 +34,8 @@ let g:imapftl_vitex#dict_92_13 = {
     \ "toc"     : "\\tableofcontents\n<++>",
     \ "center" : "\\begin{center}\n<++>\n\\end{center}\n<++>",
     \ "figure"
-    \ : "\\begin{figure} \\label{fig:<++>}"
-    \ . "\n<++>\n\\caption{<++>}\n\\end{figure}\n<++>",
+    \ : "\\begin{figure}\n<++>\n\\caption{<++>}\n"
+    \ . "\\label{fig:<++>}\n\\end{figure}\n<++>",
     \ "tikzpicture" : "\\begin{tikzpicture}\n<++>\n\\end{tikzpicture}\n<++>",
     \ "tabular" : "\\begin{tabular}[<++>]{<++>}\n<++>\n\\end{tabular}\n<++>",
     \ "array" : "\\begin{array}{<++>}\n<++>\n\\end{array}\n<++>",

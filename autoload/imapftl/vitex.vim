@@ -1,12 +1,19 @@
-let g:imapftl_vitex#leaders = ['\'] ", ';']
+let g:imapftl#vitex#leaders = [ char2nr('\') ]
 
-let g:imapftl_vitex#non_macro_char_l = ['\s', '{', '}', '[', ']', '\$']
+let g:imapftl#vitex#macro_token_excl = [
+    \ char2nr('\s'),
+    \ char2nr('{'),
+    \ char2nr('}'),
+    \ char2nr('['),
+    \ char2nr(']'),
+    \ char2nr('\$')
+    \ ]
 
 "Enter - generic
-let g:imapftl_vitex#generic_mapping_92_13 =
-    \ "\\begin{<token>}\n<++>\n\\end{<token>}\n<++>"
+let g:imapftl#vitex#generic_mapping_92_13 =
+    \ "\\begin{%N}\n<++>\n\\end{%N}\n<++>"
 "Tab - generic
-let g:imapftl_vitex#generic_mapping_92_9 = '\<token>{<++>}<++>'
+let g:imapftl#vitex#generic_mapping_92_9 = '\<%N>{<++>}<++>'
 
 " Imap Dictionaries: {{{
 " Form: { [ key = macro name, value = expansion text ], ... }
@@ -26,7 +33,7 @@ let g:imapftl_vitex#generic_mapping_92_9 = '\<token>{<++>}<++>'
 " imap dictionary: \...<cr> {{{
 " Leader 92 = '\'
 " Trigger 13 = "\<cr>"
-let g:imapftl_vitex#dict_92_13 = {
+let g:imapftl#vitex#dict_92_13 = {
     \ "document"     : "\\begin{document}\n<++>\n\\end{document}",
     \ "maketitle"     : "\\maketitle\n<++>",
     \ "title"     : "\\maketitle\n<++>",
@@ -46,7 +53,7 @@ let g:imapftl_vitex#dict_92_13 = {
     \ "displaymath" : "\\begin{displaymath}\n<++>\n\\end{displaymath}\n<++>",
     \ "math" : "\\begin{displaymath}\n<++>\n\\end{displaymath}\n<++>",
     \ "equation"
-    \ : "\\begin{equation} \\label{eq:<++>}\n<++>\n\\end{equation}\n<++>",
+    \ : "\\begin{equation} \\label{eq:<++>}<++>\\end{equation}<++>",
     \ "*equation" : "\\begin{equation*}\n<++>\n\\end{equation*}\n<++>",
     \ "align"	     : "\\begin{align}\n<++>\n\\end{align}\n<++>",
     \ "*align"    : "\\begin{align*}\n<++>\n\\end{align*}\n<++>",
@@ -83,7 +90,7 @@ let g:imapftl_vitex#dict_92_13 = {
 " imap dictionary: \...<tab> {{{
 " Leader 92 = '\'
 " Trigger 9 = "\<tab>"
-let g:imapftl_vitex#dict_92_9 = {
+let g:imapftl#vitex#dict_92_9 = {
       \ "tex"	      : "\\TeX{}",
       \ "latex"	      : "\\LaTeX{}",
       \ "input"	      : "\\input{<++>}",
@@ -196,7 +203,7 @@ let g:imapftl_vitex#dict_92_9 = {
 " imap dictionary: \...<space> {{{
 " Leader 92 = '\'
 " Trigger 32 = "\<space>"
-let g:imapftl_vitex#dict_92_32 = {
+let g:imapftl#vitex#dict_92_32 = {
       \ "tex"	      : "\\TeX{} <++>",
       \ "latex"	      : "\\LaTeX{} <++>",
       \ "item"	      : "\\item ",
@@ -278,4 +285,41 @@ let g:imapftl_vitex#dict_92_32 = {
 " }}}
 
 " }}}
+
+let g:imapftl#vitex#phs = "<+"
+let g:imapftl#vitex#phe = "+>"
+let g:imapftl#vitex#ph = g:imapftl#vitex#phs.g:imapftl#vitex#phe
+
+function s:bld_macro_cmd(name, paramc = 0, opt_param = v:false)
+  let l:macro = "\\".a:name
+
+  if a:opt_param
+    let l:macro .= "[".ph."]"
+  endif
+
+  let l:cnt = 0
+  while l:cnt < a:paramc
+    let l:cnt += 1
+    let l:macro .= "{".ph."}"
+  endwhile
+  return l:macro
+endfunction
+
+function s:bld_macro_env(name, ins_label = v:false)
+  let l:macro = "\\begin{".a:name."}"
+  if a:ins_label
+    let l:macro .= " \\label{".ph."}"
+  endif
+  let l:macro .= "\n".ph."\n\\end{".a:name."}\n"
+  return "\\begin{".a:name."}\n".ph."\n"
+endfunction
+
+function s:get_macro(type, ...)
+  if a:type == "env"
+    return bld_macro_env(a:000)
+  else
+    return bld_macro_cmd(a:000)
+  endif
+endfunction
+
 " vim:ft=vim:fdm=marker

@@ -10,10 +10,10 @@ let g:imapftl#vitex#macro_token_excl = [
     \ ]
 
 "Enter - generic
-let g:imapftl#vitex#generic_mapping_92_13 =
+let g:imapftl#vitex#generic_mapping_13 =
     \ "\\begin{%N}\n<++>\n\\end{%N}\n<++>"
 "Tab - generic
-let g:imapftl#vitex#generic_mapping_92_9 = '\<%N>{<++>}<++>'
+let g:imapftl#vitex#generic_mapping_9 = '\<%N>{<++>}<++>'
 
 " Imap Dictionaries: {{{
 " Form: { [ key = macro name, value = expansion text ], ... }
@@ -33,7 +33,7 @@ let g:imapftl#vitex#generic_mapping_92_9 = '\<%N>{<++>}<++>'
 " imap dictionary: \...<cr> {{{
 " Leader 92 = '\'
 " Trigger 13 = "\<cr>"
-let g:imapftl#vitex#dict_92_13 = {
+let s:env_dict = {
     \ "document"     : "\\begin{document}\n<++>\n\\end{document}",
     \ "maketitle"     : "\\maketitle\n<++>",
     \ "title"     : "\\maketitle\n<++>",
@@ -53,7 +53,7 @@ let g:imapftl#vitex#dict_92_13 = {
     \ "displaymath" : "\\begin{displaymath}\n<++>\n\\end{displaymath}\n<++>",
     \ "math" : "\\begin{displaymath}\n<++>\n\\end{displaymath}\n<++>",
     \ "equation"
-    \ : "\\begin{equation} \\label{eq:<++>}<++>\\end{equation}<++>",
+    \ : "\\begin{equation} \\label{eq:<++>}\n<++>\n\\end{equation}\n<++>",
     \ "*equation" : "\\begin{equation*}\n<++>\n\\end{equation*}\n<++>",
     \ "align"	     : "\\begin{align}\n<++>\n\\end{align}\n<++>",
     \ "*align"    : "\\begin{align*}\n<++>\n\\end{align*}\n<++>",
@@ -90,12 +90,13 @@ let g:imapftl#vitex#dict_92_13 = {
 " imap dictionary: \...<tab> {{{
 " Leader 92 = '\'
 " Trigger 9 = "\<tab>"
-let g:imapftl#vitex#dict_92_9 = {
+let s:cmd_dict = {
       \ "tex"	      : "\\TeX{}",
       \ "latex"	      : "\\LaTeX{}",
       \ "input"	      : "\\input{<++>}",
       \ "usepackage"    : "\\usepackage[<++>]{<++>}",
       \ "newcommand"    : "\\newcommand{<++>}[<++>][<++>]{<++>}",
+      \ "renewcommand" : {"txt" : "renewcommand", "paramc" : 2, "opt" : 0},
       \ "section"	: "\\section{<++>}\n<++>",
       \ "subsection"    : "\\subsection{<++>}\n<++>",
       \ "ssection"      : "\\subsection{<++>}\n<++>",
@@ -118,8 +119,8 @@ let g:imapftl#vitex#dict_92_9 = {
       \ "scr"	      : "\\mathscr{<++>}<++>",
       \ "textbf"	      : "\\textbf{<++>}<++>",
       \ "bf"	      : "\\textbf{<++>}<++>",
-      \ "textit"	      : "\\textit{<++>}<++>",
-      \ "it"	      : "\\textit{<++>}<++>",
+      \ "textit" : {"txt" : "textit", "paramc" : 1, "opt" : v:false},
+      \ "it" : {"txt" : "textit", "paramc" : 1, "opt" : v:false},
       \ "textsc"	      : "\\textsc{<++>}<++>",
       \ "sc"	      : "\\textsc{<++>}<++>",
       \ "texttt"	      : "\\texttt{<++>}<++>",
@@ -130,50 +131,50 @@ let g:imapftl#vitex#dict_92_9 = {
       \ "eqref"	      : "\\eqref{eq:<++>}<++>",
       \ "hyperref"      : "\\hyperref[<++>]{<++>}<++>",
       \ "label"	      : "\\label{<++>}<++>",
-      \ 'a' : '\alpha',
-      \ 'b' : '\beta',
-      \ 'c' : '\varsigma',
-      \ 'd' : '\delta',
-      \ 'e' : '\epsilon',
-      \ 'f' : '\phi',
-      \ 'g' : '\gamma',
-      \ 'h' : '\eta',
-      \ 'i' : '\iota',
-      \ 'j' : '\varepsilon',
-      \ 'k' : '\kappa',
-      \ 'l' : '\lambda',
-      \ 'm' : '\mu',
-      \ 'n' : '\nu',
-      \ 'o' : '\omicron',
-      \ 'p' : '\pi',
-      \ 'q' : '\theta',
-      \ 'r' : '\rho',
-      \ 's' : '\sigma',
-      \ 't' : '\tau',
-      \ 'u' : '\upsilon',
-      \ 'v' : '\varphi',
-      \ 'w' : '\omega',
-      \ 'x' : '\chi',
-      \ 'y' : '\psi',
-      \ 'z' : '\zeta',
-      \ 'D' : '\Delta',
-      \ 'F' : '\Phi',
-      \ 'G' : '\Gamma',
-      \ 'L' : '\Lambda',
-      \ 'P' : '\Pi',
-      \ 'Q' : '\Theta',
-      \ 'S' : '\Sigma',
-      \ 'U' : '\Upsilon',
-      \ 'W' : '\Omega',
-      \ 'Y' : '\Psi',
+      \ "a" : {"txt" : "alpha", "paramc" : 0, "opt" : 0},
+      \ "b" : {"txt" : "beta", "paramc" : 0, "opt" : 0},
+      \ "c" : {"txt" : "varsigma", "paramc" : 0, "opt" : 0},
+      \ "d" : {"txt" : "delta", "paramc" : 0, "opt" : 0},
+      \ "e" : {"txt" : "epsilon", "paramc" : 0, "opt" : 0},
+      \ "f" : {"txt" : "phi", "paramc" : 0, "opt" : 0},
+      \ "g" : {"txt" : "gamma", "paramc" : 0, "opt" : 0},
+      \ "h" : {"txt" : "eta", "paramc" : 0, "opt" : 0},
+      \ "i" : {"txt" : "iota", "paramc" : 0, "opt" : 0},
+      \ "j" : {"txt" : "varepsilon", "paramc" : 0, "opt" : 0},
+      \ "k" : {"txt" : "kappa", "paramc" : 0, "opt" : 0},
+      \ "l" : {"txt" : "lambda", "paramc" : 0, "opt" : 0},
+      \ "m" : {"txt" : "mu", "paramc" : 0, "opt" : 0},
+      \ "n" : {"txt" : "nu", "paramc" : 0, "opt" : 0},
+      \ "o" : {"txt" : "omicron", "paramc" : 0, "opt" : 0},
+      \ "p" : {"txt" : "pi", "paramc" : 0, "opt" : 0},
+      \ "q" : {"txt" : "theta", "paramc" : 0, "opt" : 0},
+      \ "r" : {"txt" : "rho", "paramc" : 0, "opt" : 0},
+      \ "s" : {"txt" : "sigma", "paramc" : 0, "opt" : 0},
+      \ "t" : {"txt" : "tau", "paramc" : 0, "opt" : 0},
+      \ "u" : {"txt" : "upsilon", "paramc" : 0, "opt" : 0},
+      \ "v" : {"txt" : "varphi", "paramc" : 0, "opt" : 0},
+      \ "w" : {"txt" : "omega", "paramc" : 0, "opt" : 0},
+      \ "x" : {"txt" : "chi", "paramc" : 0, "opt" : 0},
+      \ "y" : {"txt" : "psi", "paramc" : 0, "opt" : 0},
+      \ "z" : {"txt" : "zeta", "paramc" : 0, "opt" : 0},
+      \ "D" : {"txt" : "Delta", "paramc" : 0, "opt" : 0},
+      \ "F" : {"txt" : "Phi", "paramc" : 0, "opt" : 0},
+      \ "G" : {"txt" : "Gamma", "paramc" : 0, "opt" : 0},
+      \ "L" : {"txt" : "Lambda", "paramc" : 0, "opt" : 0},
+      \ "P" : {"txt" : "Pi", "paramc" : 0, "opt" : 0},
+      \ "Q" : {"txt" : "Theta", "paramc" : 0, "opt" : 0},
+      \ "S" : {"txt" : "Sigma", "paramc" : 0, "opt" : 0},
+      \ "U" : {"txt" : "Upsilon", "paramc" : 0, "opt" : 0},
+      \ "W" : {"txt" : "Omega", "paramc" : 0, "opt" : 0},
+      \ "Y" : {"txt" : "Psi", "paramc" : 0, "opt" : 0},
+      \ "6" : {"txt" : "partial", "paramc" : 0, "opt" : 0},
+      \ "partial" : {"txt" : "partial", "paramc" : 0, "opt" : 0},
+      \ "8" : {"txt" : "infty", "paramc" : 0, "opt" : 0},
+      \ "infty" : {"txt" : "infty", "paramc" : 0, "opt" : 0},
+      \ "-" : {"txt" : "setminus", "paramc" : 0, "opt" : 0},
+      \ "setminus" : {"txt" : "setminus", "paramc" : 0, "opt" : 0},
       \ '^' : '\hat{<++>}<++>',
       \ '_' : '\bar{<++>}<++>',
-      \ '6' : '\partial',
-      \ 'partial' : '\partial',
-      \ '8' : '\infty',
-      \ 'infty' : '\infty',
-      \ '-' : '\setminus',
-      \ 'setminus' : '\setminus',
       \ '/' : '\frac{<++>}{<++>}<++>',
       \ 'frac' : '\frac{<++>}{<++>}<++>',
       \ '@' : '\circ',
@@ -200,112 +201,74 @@ let g:imapftl#vitex#dict_92_9 = {
       \ }
 " }}}
 
-" imap dictionary: \...<space> {{{
-" Leader 92 = '\'
-" Trigger 32 = "\<space>"
-let g:imapftl#vitex#dict_92_32 = {
-      \ "tex"	      : "\\TeX{} <++>",
-      \ "latex"	      : "\\LaTeX{} <++>",
-      \ "item"	      : "\\item ",
-      \ "boldsymbol"  : "\\boldsymbol ",
-      \ "mathbf"      : "\\mathbf ",
-      \ "mbf"	      : "\\mathbf ",
-      \ "mathbb"      : "\\mathbb ",
-      \ "bb"	      : "\\mathbb ",
-      \ "mathrm"      : "\\mathrm ",
-      \ "rm"	      : "\\mathrm ",
-      \ "mathcal"     : "\\mathcal ",
-      \ "cal"	      : "\\mathcal ",
-      \ "mathscr"     : "\\mathscr ",
-      \ "scr"	      : "\\mathscr ",
-      \ "a" : '\alpha ',
-      \ 'b' : '\beta ',
-      \ 'c' : '\varsigma ',
-      \ 'd' : '\delta ',
-      \ 'e' : '\epsilon ',
-      \ 'f' : '\phi ',
-      \ 'g' : '\gamma ',
-      \ 'h' : '\eta ',
-      \ 'i' : '\iota ',
-      \ 'j' : '\varepsilon ',
-      \ 'k' : '\kappa ',
-      \ 'l' : '\lambda ',
-      \ 'm' : '\mu ',
-      \ 'n' : '\nu ',
-      \ 'o' : '\omicron ',
-      \ 'p' : '\pi ',
-      \ 'q' : '\theta ',
-      \ 'r' : '\rho ',
-      \ 's' : '\sigma ',
-      \ 't' : '\tau ',
-      \ 'u' : '\upsilon ',
-      \ 'v' : '\varphi ',
-      \ 'w' : '\omega ',
-      \ 'x' : '\chi ',
-      \ 'y' : '\psi ',
-      \ 'z' : '\zeta ',
-      \ 'D' : '\Delta ',
-      \ 'F' : '\Phi ',
-      \ 'G' : '\Gamma ',
-      \ 'L' : '\Lambda ',
-      \ 'P' : '\Pi ',
-      \ 'Q' : '\Theta ',
-      \ 'S' : '\Sigma ',
-      \ 'U' : '\Upsilon ',
-      \ 'W' : '\Omega ',
-      \ 'Y' : '\Psi ',
-      \ '^' : '\hat ',
-      \ '_' : '\bar ',
-      \ '6' : '\partial ',
-      \ '8' : '\infty ',
-      \ '-' : '\setminus ',
-      \ '/' : '\frac ',
-      \ 'frac' : '\frac ',
-      \ '@' : '\circ ',
-      \ '0' : '^\circ ',
-      \ '=' : '\equiv ',
-      \ '.' : '\cdot ',
-      \ '*' : '\times ',
-      \ '2' : '\sqrt ',
-      \ '~' : '\tilde ',
-      \ 'nonumber' : '\nonumber ',
-      \ "square" : '\square ',
-      \ "tilde" : '\tilde ',
-      \ "hat" : '\hat ',
-      \ "bar" : '\bar ',
-      \ "widetilde" : '\widetilde ',
-      \ "wtilde" : '\widetilde ',
-      \ "widehat" : '\widehat ',
-      \ "what" : '\widehat ',
-      \ "widebar" : '\widebar ',
-      \ "wbar" : '\widebar ',
-      \ "wedge" : '\wedge ',
-      \ 'dot' : '\dot ',
-      \ }
-" }}}
-
 " }}}
 
 let g:imapftl#vitex#phs = "<+"
 let g:imapftl#vitex#phe = "+>"
 let g:imapftl#vitex#ph = g:imapftl#vitex#phs.g:imapftl#vitex#phe
 
-function s:bld_macro_cmd(name, paramc = 0, opt_param = v:false)
-  let l:macro = "\\".a:name
-
-  if a:opt_param
-    let l:macro .= "[".ph."]"
+func s:lookup_macro(dict, token)
+  if has_key(a:dict, a:token)
+    return a:dict[a:token]
   endif
 
-  let l:cnt = 0
-  while l:cnt < a:paramc
-    let l:cnt += 1
-    let l:macro .= "{".ph."}"
+  " User-typed token does not match a macro name exactly, so build a list of 
+  " those it pattern-matches.
+  let l:matches = []
+  for l:key in keys(a:dict)
+    if l:key =~ '\C^'.a:token.'\w*$'
+      call extend(l:matches, [l:key])
+    endif
+  endfor
+
+  if len(l:matches) <= 0
+    return {}
+  endif
+
+  if len(l:matches) == 1
+    " Unique macro key matching token, so just grab that one's 
+    " corresponding l:macro text.
+    return a:dict[l:matches[0]]
+  endif
+
+  call sort(l:matches)
+  let l:sel_prompt_list = ['Select macro:']
+  for selection in l:matches
+    call add(l:sel_prompt_list,
+	\ index(l:matches, selection) + 1
+	\ . '. ' . selection)
+  endfor
+  let selMacro = l:matches[
+      \ inputlist(l:sel_prompt_list) - 1 ]
+  return a:dict[selMacro]
+endfunc
+
+function s:bld_macro_cmd(token, trigger)
+  let l:macro_dict = s:lookup_macro(s:cmd_dict, a:token)
+  if empty(l:macro_dict)
+    return v:null
+  endif
+
+  let l:macro = "\\".l:macro_dict["txt"]
+
+  if a:trigger == 32 " <space>
+    return l:macro." "
+  endif
+
+  if l:macro_dict["opt"]
+    let l:macro .= "[<++>]"
+  endif
+  let l:param_nr = 0
+  while l:param_nr < l:macro_dict["paramc"]
+    let l:param_nr += 1
+    let l:macro .= "{<++>}"
   endwhile
-  return l:macro
+
+  return l:macro."<++>"
 endfunction
 
-function s:bld_macro_env(name, ins_label = v:false)
+function s:bld_macro_env(token)
+  return s:lookup_macro(s:env_dict, a:token)
   let l:macro = "\\begin{".a:name."}"
   if a:ins_label
     let l:macro .= " \\label{".ph."}"
@@ -314,11 +277,11 @@ function s:bld_macro_env(name, ins_label = v:false)
   return "\\begin{".a:name."}\n".ph."\n"
 endfunction
 
-function s:get_macro(type, ...)
-  if a:type == "env"
-    return bld_macro_env(a:000)
+function imapftl#vitex#get_macro(token, trigger, leader)
+  if a:trigger == 13 " <cr>
+    return s:bld_macro_env(a:token)
   else
-    return bld_macro_cmd(a:000)
+      return s:bld_macro_cmd(a:token, a:trigger)
   endif
 endfunction
 

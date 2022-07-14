@@ -107,7 +107,7 @@ let s:cmd_dict = {
     \ "emph" : {"paramc" : 1},
     \ "cite" : {"paramc" : 1},
     \ "ref" : {"paramc" : 1},
-    \ "eqref" : {"paramc" : 1},
+    \ "eqref" : {"raw" : "\\eqref{eq:<++>}"},
     \ "hyperref" : {"paramc" : 1},
     \ "label" : {"paramc" : 1},
     \ "a" : {"txt" : "alpha", "paramc" : 0, "opt" : 0},

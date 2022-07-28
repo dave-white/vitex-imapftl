@@ -21,7 +21,7 @@ inoremap <buffer> .d \ddots
 inoremap <buffer> == &=
 inoremap <buffer> __ <c-r>=imapftl#print_ph_jump('_{<++>}')<cr>
 inoremap <buffer> ^^ <c-r>=imapftl#print_ph_jump('^{<++>}')<cr>
-inoremap <buffer> $$ <c-r>=imapftl#print_ph_jump('$ <++> $')<cr>
+inoremap <buffer> $$ <c-r>=imapftl#print_ph_jump('$<++>$')<cr>
 inoremap <buffer> () <c-r>=imapftl#print_ph_jump('(<++>)')<cr>
 inoremap <buffer> [] <c-r>=imapftl#print_ph_jump('[<++>]')<cr>
 inoremap <buffer> {} <c-r>=imapftl#print_ph_jump('{<++>}')<cr>

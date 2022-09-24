@@ -12,7 +12,7 @@ inoremap <buffer> <C-K> <c-o>:call imapftl#jump2ph("vitex", -1)<CR>
 
 inoremap <buffer> ... \textellipsis
 inoremap <buffer> \|\| \textbar
-inoremap <buffer> <bslash><bslash> \backslash
+" inoremap <buffer> <bslash><bslash> \backslash
 inoremap <buffer> .c \dotsc
 inoremap <buffer> .b \dotsc
 inoremap <buffer> .v \vdots
@@ -25,5 +25,7 @@ inoremap <buffer> $$ <c-r>=imapftl#print_ph_jump('$<++>$')<cr>
 inoremap <buffer> () <c-r>=imapftl#print_ph_jump('(<++>)')<cr>
 inoremap <buffer> [] <c-r>=imapftl#print_ph_jump('[<++>]')<cr>
 inoremap <buffer> {} <c-r>=imapftl#print_ph_jump('{<++>}')<cr>
+inoremap <buffer> <> <c-r>=imapftl#print_ph_jump('\langle <++> \rangle')<cr>
 inoremap <buffer> (( <c-r>=imapftl#print_ph_jump('\left( <++> \right)')<cr>
 inoremap <buffer> {{ <c-r>=imapftl#print_ph_jump('\left\{ <++> \right\}')<cr>
+inoremap <buffer> << <c-r>=imapftl#print_ph_jump('\left\langle <++> \right\rangle')<cr>

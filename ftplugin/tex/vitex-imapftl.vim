@@ -13,8 +13,8 @@ inoremap <buffer> <C-K> <c-o>:call imapftl#jump2ph("vitex", -1)<CR>
 inoremap <buffer> ... \textellipsis
 inoremap <buffer> \|\| \textbar
 " inoremap <buffer> <bslash><bslash> \backslash
-inoremap <buffer> .c \dotsc
-inoremap <buffer> .b \dotsc
+inoremap <buffer> ., \dotsc
+inoremap <buffer> .* \dotsb
 inoremap <buffer> .v \vdots
 inoremap <buffer> .h \hdots
 inoremap <buffer> .d \ddots

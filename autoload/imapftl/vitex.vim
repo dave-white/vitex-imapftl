@@ -52,6 +52,7 @@ let s:env_dict = {
     \ "proposition" : {"txt" : "prop", "lab" : "prop:", "opt" : 1},
     \ "lemma" : {"txt" : "lem", "lab" : "lem:", "opt" : 1},
     \ "corollary" : {"txt" : "cor", "lab" : "cor:", "opt" : 1},
+    \ "conjecture" : {"txt" : "conj", "lab" : "conj:", "opt" : 1},
     \ "definition" : {"txt": "defn", "lab" : "def:", "opt" : 1},
     \ "example" : {"txt" : "exm", "lab" : "exm:", "opt" : 1},
     \ "problem" : {"txt" : "prob", "lab" : "prob:", "opt" : 1},
@@ -171,7 +172,15 @@ let s:cmd_dict = {
     \ "wedge" : {},
     \ "integral" : {"raw" : "\\int_{<++>}^{<++>}<++>"},
     \ "sum" : {"raw" : "\\sum_{<++>}^{<++>}<++>"},
+    \ "dirsum" : {"raw" : "\\oplus_{<++>}^{<++>}<++>"},
     \ "dot" : {"paramc" : 1},
+    \ "flat" : {},
+    \ "natural" : {},
+    \ "sharp" : {},
+    \ "tensor" : {"txt" : "otimes", "paramc" : 1},
+    \ "SU2" : {"raw" : "\\mathrm{SU}(2)"},
+    \ "su2" : {"raw" : "\\mathfrak{su}(2)"},
+    \ "SO3" : {"raw" : "\\mathrm{SO}(3)"},
     \ }
 " }}}
 
